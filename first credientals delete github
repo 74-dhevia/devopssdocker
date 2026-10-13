@@ -1,0 +1,78 @@
+*Procedure to Remove Saved GitHub Credentials in Windows*
+Step 1: Open Control Panel
+Press Windows + S.
+Type Control Panel.
+Click to open it.
+Step 2: Open Credential Manager
+Click User Accounts.
+Select Credential Manager.
+Click Windows Credentials.
+Step 3: Find GitHub Credentials
+Scroll down to Generic Credentials.
+Look for an entry named git:https://github.com or another entry related to GitHub.
+
+
+Step 4: Remove the Credentials
+Click the GitHub-related entry to expand it.
+Click Remove.
+Click Yes to confirm.
+Step 5: Verify
+Open VS Code.
+Open the terminal.
+Run: git push
+4. If authentication is requested, sign in using your own GitHub account.
+Important: This removes the saved GitHub login credential from Windows. It does not delete the GitHub account or any repositories.
+
+
+
+Jebkins : 
+Jenkins Git Configuration:
+
+Sometimes, while configuring the Git URL in Jenkins, you may get an error if Git is not configured properly.
+
+To fix this:
+
+1. Go to Manage Jenkins → Tools (or Global Tool Configuration).
+2. Under Git installations, click Add Git.
+3. Enter a name for Git.
+4. In Path to Git executable, provide the Git executable path from your system installation.
+5. Make sure the path ends with git.exe.
+
+Example path:
+C:\Program Files\Git\bin\git.exe
+
+6. Save the configuration and try configuring the Git URL again.
+
+Important: Make sure Git is installed on your system and the correct git.exe path is configured in Jenkins. Otherwise, you may encounter errors while configuring the Git repository URL.
+
+Jenkins GitHub URL Configuration
+
+Sometimes, even after configuring the correct git.exe path, the GitHub repository URL may show a red box or red line in Jenkins. In that case, follow these steps:
+
+Step 1: Configure Git Credentials
+
+1. Go to your Jenkins job configuration and enter your GitHub repository URL under Source Code Management → Git → Repository URL.
+2. If the URL shows a red box or red line, check the Credentials section below it.
+3. Click Add → Jenkins (Global credentials).
+4. Select Username with password.
+5. Enter the following details:
+    * Username: Your GitHub username.
+    * Password: Github password 
+    * ID: Enter your GitHub Personal Access Token.
+    * Description: Optional; you can leave it blank.
+6. Click Add, then select the credentials you created from the Credentials dropdown.
+
+Step 2: Generate a GitHub Personal Access Token
+
+1. Log in to GitHub and go to Profile → Settings.
+2. Scroll down and click Developer settings.
+3. Select Personal access tokens.
+4. Choose Fine-grained tokens or Tokens (classic).
+5. Click Generate new token.
+6. Enter a token name and configure the required repository permissions.
+7. Generate the token and copy it immediately.
+
+Step 3: Save and Test
+
+1. Make sure the correct credentials are selected in Jenkins.
+2. Click Save and run the Jenkins job.
