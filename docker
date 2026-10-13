@@ -1,0 +1,113 @@
+
+
+## Docker Practical — Full Command List
+
+First, VS Code terminal open panni project folder-kulla po:
+
+```
+cd C:\Users\dheiv\OneDrive\Desktop\devopPractice\student-app
+```
+
+### 1. Docker installed-ah check pannu
+
+```
+docker --version
+docker info
+```
+
+### 2. Docker image build pannu
+
+Project root-la `Dockerfile` and `.dockerignore` already create pannirukkanum.
+
+```
+docker build -t student-app .
+```
+
+### 3. Image create aachanu check pannu
+
+```
+docker images
+```
+
+### 4. Container run pannu
+
+```
+docker run -d -p 8081:80 --name student-container student-app
+```
+
+### 5. Container running-ah check pannu
+
+```
+docker ps
+```
+
+All containers status paaka:
+
+```
+docker ps -a
+```
+
+### 6. Browser-la application open pannu
+
+[http://localhost:8081 — Student Registration App](http://localhost:8081)
+
+### 7. Container logs paaka
+
+```
+docker logs student-container
+```
+
+Live logs paaka:
+
+```
+docker logs -f student-container
+```
+
+### 8. Container stop / start pannu
+
+```
+docker stop student-container
+docker start student-container
+```
+
+### 9. Container remove pannu
+
+First stop panni, apram remove pannu.
+
+```
+docker stop student-container
+docker rm student-container
+```
+
+### 10. Docker image remove pannu
+
+```
+docker rmi student-app
+```
+
+### 11. GitHub-la Dockerfile upload panna
+
+```
+git add .
+git commit -m "Add Docker configuration"
+git push
+
+
+## Exam-ku important commands
+
+| Command                                                         | Use                               |
+| --------------------------------------------------------------- | --------------------------------- |
+| `docker build -t student-app .`                                 | Image build pannum                |
+| `docker images`                                                 | Images list kaattum               |
+| `docker run -d -p 8081:80 --name student-container student-app` | Container create panni run pannum |
+| `docker ps`                                                     | Running containers kaattum        |
+| `docker ps -a`                                                  | All containers kaattum            |
+| `docker logs student-container`                                 | Container logs kaattum            |
+| `docker stop student-container`                                 | Container stop pannum             |
+| `docker start student-container`                                | Container restart pannum          |
+| `docker rm student-container`                                   | Container remove pannum           |
+| `docker rmi student-app`                                        | Image remove pannum               |
+
+Important: Port `8081` already use aagudhu na, `8082:80` use pannalaam. Container name already irukku na, remove pannitu thirumba run pannu.
+
+Indha list-la commands mattum illaama, practical-ku `Dockerfile`-um thevai. Nee create panna React project-ku multi-stage Dockerfile use pannuvom; adhu `npm run build` panni final `dist` files-a Nginx moolama serve pannum.
