@@ -76,3 +76,40 @@ Step 3: Save and Test
 
 1. Make sure the correct credentials are selected in Jenkins.
 2. Click Save and run the Jenkins job.
+
+
+jenkins pipeline
+pipeline {
+    agent any 
+    stages{
+        stage('Clone Repository'){
+            steps{
+                git branch:'main',
+                     url:'https://github.com/24104106-sketch/Devops-React-application.git'
+            }
+        }
+        stage('Install Dependencies'){
+            steps{
+                bat 'call npm ci'
+            }
+        }
+        stage('Build React App'){
+            steps{
+            bat 'npm run build'
+            }
+        }
+        stage('Archeive dist'){
+            steps{
+                archiveArtifacts artifacts:'dist/**'
+            }
+        }
+    }
+    post{
+        success{
+            echo 'React app built successfully'
+        }
+        failure{
+            echo 'Failed to built react app!!'
+        }
+    }
+}
