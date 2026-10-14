@@ -140,58 +140,99 @@ import { useState } from "react";
 
 function App() {
   const [name, setName] = useState("");
-  const [items, setItems] = useState([]);
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (name.trim() === "") {
-      alert("Please enter a name");
+    if (!name.trim() || !email.trim()) {
+      setMessage("Please fill all fields!");
       return;
     }
 
-    setItems([...items, name]);
-    setName("");
-  }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setMessage("Enter a valid email!");
+      return;
+    }
 
-  function handleDelete(index) {
-    setItems(items.filter((_, i) => i !== index));
+    setMessage("Registration successful!");
   }
 
   return (
     <div style={{ padding: "30px", fontFamily: "Arial" }}>
-      <h1>Student Management</h1>
+      <h1>Student Registration</h1>
 
       <form onSubmit={handleSubmit}>
         <input
-          type="text"
-          placeholder="Enter student name"
+          placeholder="Enter name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
+        <br /><br />
 
-        <button type="submit">Add</button>
+        <input
+          placeholder="Enter email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <br /><br />
+
+        <button type="submit">Register</button>
       </form>
 
-      <h2>Student List</h2>
-
-      {items.length === 0 ? (
-        <p>No records found</p>
-      ) : (
-        <ul>
-          {items.map((item, index) => (
-            <li key={index}>
-              {item}{" "}
-              <button onClick={() => handleDelete(index)}>
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+      <p>{message}</p>
     </div>
   );
 }
 
 export default App;
 
+
+jenkins deploy 
+npm run build
+npm install -g serve
+serve -s dist -l 8081
+
+pipeline code:
+pipeline {
+    agent any 
+    stages{
+        stage('Clone Repository'){
+            steps{
+                git branch:'main',
+                     url:'https://github.com/24104106-sketch/Devops-React-application.git'
+            }
+        }
+        stage('Install Dependencies'){
+            steps{
+                bat 'call npm ci'
+            }
+        }
+        stage('Build React App'){
+            steps{
+            bat 'npm run build'
+            }
+        }
+        stage('Archeive dist'){
+            steps{
+                archiveArtifacts artifacts:'dist/**'
+            }
+        }
+    }
+    post{
+        success{
+            echo 'React app built successfully'
+        }
+        failure{
+            echo 'Failed to built react app!!'
+        }
+    }
+}
+
+docker hub
+docker login
+docker tag my-react-app:latest YOUR_DOCKERHUB_USERNAME/my-react-app:latest
+docker push YOUR_DOCKERHUB_USERNAME/my-react-app:latest
+docker pull YOUR_DOCKERHUB_USERNAME/my-react-app:latest
+docker run -d -p 8082:4173 --name react-container YOUR_DOCKERHUB_USERNAME/my-react-app:latest
